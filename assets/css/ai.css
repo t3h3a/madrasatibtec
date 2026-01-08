@@ -1,21 +1,26 @@
 /* =========================
-   متغيرات وأساسيات عامة
+   AI page theme
 ========================= */
 :root {
-    --bg-main: #020617;            /* خلفية داكنة */
-    --bg-card: rgba(15, 23, 42, 0.96);
-    --accent: var(--accent-secondary, #f97316);             /* برتقالي */
-    --accent-soft: rgba(249, 115, 22, 0.14);
-    --primary: var(--accent-primary, #3b82f6);            /* أزرق */
-    --primary-soft: rgba(59, 130, 246, 0.12);
-    --text-main: #f8fafc;          /* نص أبيض أوضح */
-    --text-muted: #cbd5e1;         /* نص ثانوي أفتح */
-    --radius-lg: 24px;
-    --radius-md: 18px;
-    --shadow-strong: 0 26px 80px rgba(15, 23, 42, 0.9);
-    --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.7);
-    --transition-fast: 0.25s ease;
-    --transition-slow: 0.45s ease;
+    --ai-bg-base: #0b1224;
+    --ai-bg-deep: #0f1d38;
+    --ai-bg-shift: #0c3443;
+    --ai-surface: rgba(7, 14, 29, 0.6);
+    --ai-surface-strong: rgba(7, 14, 29, 0.88);
+    --ai-accent: #ff9f43;
+    --ai-accent-2: #22d3ee;
+    --ai-accent-3: #34d399;
+    --ai-text: #f8fafc;
+    --ai-muted: #cbd5e1;
+    --ai-border: rgba(148, 163, 184, 0.3);
+    --ai-radius-lg: 24px;
+    --ai-radius-md: 16px;
+    --ai-shadow-strong: 0 30px 70px rgba(2, 6, 23, 0.65);
+    --ai-shadow-soft: 0 16px 36px rgba(2, 6, 23, 0.35);
+    --ai-transition-fast: 0.2s ease;
+    --ai-transition-slow: 0.45s ease;
+    --ai-font-body: "Readex Pro", "Tajawal", sans-serif;
+    --ai-font-display: "Changa", "Readex Pro", "Tajawal", sans-serif;
 }
 
 *,
@@ -29,19 +34,16 @@ body {
     margin: 0;
     padding: 0;
     direction: rtl;
-    font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-    background: var(--bg-main);
-    color: var(--text-main);
+    font-family: var(--ai-font-body);
+    background: var(--ai-bg-base);
+    color: var(--ai-text);
 }
 
-/* صفحة المساعد: اجعل الخلفية شفافة ليظهر Spline */
 body[data-page="ai"] {
-    background: var(--bg-main);
-    color: var(--text-main);
+    background: var(--ai-bg-base);
+    color: var(--ai-text);
 }
 
-/* نخلي البودي يمتد لأسفل */
 body {
     min-height: 100vh;
     display: flex;
@@ -63,17 +65,18 @@ body {
     background: var(--header-bg, rgba(255, 255, 255, 0.9)) !important;
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border-color, rgba(148, 163, 184, 0.22));
-    position: fixed !important; /* تأكيد الثبات */
+    position: fixed !important;
     top: 0 !important;
     right: 0 !important;
     left: 0 !important;
     width: 100% !important;
-    z-index: 10000 !important; /* فوق كل شيء */
+    z-index: 10000 !important;
 }
 
 .main-header .brand-top {
     color: var(--text-primary) !important;
 }
+
 .main-header .brand-sub {
     color: var(--text-secondary) !important;
 }
@@ -116,24 +119,85 @@ body {
     }
 
     .ai-chat-container {
-        padding-top: 65px; /* مسافة أقل للهيدر على الموبايل */
+        padding-top: 65px;
     }
 }
 
 /* =========================
-   خلفية نيون مستقبلية
+   خلفية المساعد
 ========================= */
 
 .ai-bg {
     position: fixed;
     inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
     background:
-        radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.25), transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(249, 115, 22, 0.22), transparent 55%),
-        radial-gradient(circle at 60% 10%, rgba(129, 140, 248, 0.18), transparent 55%),
-        radial-gradient(circle at 0% 100%, rgba(14, 165, 233, 0.22), transparent 60%),
-        #020617;
-    z-index: -2;
+        radial-gradient(900px 600px at 85% -10%, rgba(34, 211, 238, 0.24), transparent 60%),
+        radial-gradient(720px 520px at -10% 10%, rgba(255, 159, 67, 0.24), transparent 60%),
+        radial-gradient(680px 520px at 50% 110%, rgba(52, 211, 153, 0.2), transparent 65%),
+        linear-gradient(150deg, var(--ai-bg-base) 0%, var(--ai-bg-deep) 45%, var(--ai-bg-shift) 100%);
+}
+
+.ai-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 46px),
+        repeating-linear-gradient(25deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 60px);
+    opacity: 0.35;
+}
+
+.ai-bg::after {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    background: conic-gradient(
+        from 90deg at 50% 50%,
+        rgba(34, 211, 238, 0.16),
+        rgba(255, 159, 67, 0.16),
+        rgba(52, 211, 153, 0.12),
+        rgba(34, 211, 238, 0.16)
+    );
+    filter: blur(80px);
+    opacity: 0.55;
+    animation: ai-aurora 18s ease-in-out infinite;
+}
+
+.ai-orb {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    filter: blur(6px);
+    opacity: 0.75;
+    mix-blend-mode: screen;
+    animation: ai-orb 22s ease-in-out infinite;
+}
+
+.ai-orb.orb-1 {
+    top: -140px;
+    right: -90px;
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.5), transparent 65%);
+    animation-duration: 24s;
+}
+
+.ai-orb.orb-2 {
+    bottom: -160px;
+    left: -120px;
+    background: radial-gradient(circle, rgba(255, 159, 67, 0.5), transparent 65%);
+    animation-duration: 26s;
+}
+
+.ai-orb.orb-3 {
+    top: 45%;
+    left: 58%;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(52, 211, 153, 0.4), transparent 65%);
+    animation-duration: 18s;
 }
 
 /* =========================
@@ -142,42 +206,45 @@ body {
 
 .ai-header-inline {
     text-align: center;
-    padding: 18px 20px 16px;
-    background: transparent !important;
-    border-bottom: none;
+    padding: 20px 20px 16px;
+    background: rgba(7, 14, 29, 0.55);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    backdrop-filter: blur(12px);
     flex-shrink: 0;
+    animation: ai-rise 0.6s ease both;
 }
 
 .ai-header-inline h1 {
     margin: 0 0 6px;
-    font-size: clamp(1.3rem, 2vw + 0.5rem, 1.8rem);
+    font-size: clamp(1.35rem, 2.2vw + 0.5rem, 2rem);
     font-weight: 800;
-    letter-spacing: 0.02em;
-    color: var(--text-main);
+    letter-spacing: 0.01em;
+    font-family: var(--ai-font-display);
+    color: var(--ai-text);
 }
 
 .ai-header-inline h1 span {
-    color: var(--accent);
+    color: var(--ai-accent);
 }
 
 .ai-header-inline p {
     margin: 0;
-    font-size: clamp(0.85rem, 1vw, 0.95rem);
-    color: var(--text-muted);
+    font-size: clamp(0.9rem, 1vw, 1rem);
+    color: var(--ai-muted);
 }
 
-/* قفل ألوان النص داخل تجربة المساعد بدرجة عالية الوضوح (تتبنى ألوان الثيم المختارة) */
+/* قفل ألوان النص داخل تجربة المساعد بدرجة عالية الوضوح */
 .ai-chat-container,
 .ai-chat-container h1,
 .ai-chat-container h2,
 .ai-chat-container h3,
 .ai-chat-container p {
-    color: var(--text-main) !important;
+    color: var(--ai-text) !important;
 }
 
 .ai-chat-container .message.user,
 .ai-chat-container .message.bot {
-    color: var(--text-main) !important;
+    color: var(--ai-text) !important;
 }
 
 /* =========================
@@ -187,41 +254,26 @@ body {
 .ai-chat-container {
     width: 100%;
     margin: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(15, 23, 42, 0.98),
-        rgba(15, 23, 42, 0.92)
-    );
-    backdrop-filter: blur(6px);
-    pointer-events: none; /* السماح بالنقر على Spline في المساحات الفارغة */
-    border-radius: 0;
-    box-shadow: none;
-    border: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     overflow: hidden;
-
     display: flex;
     flex-direction: column;
     height: 100vh;
-    height: 100dvh; /* استخدام dvh للدعم الحديث */
-    height: -webkit-fill-available; /* دعم إضافي لـ iOS Safari */
-    z-index: 1;
-    padding-top: 75px; /* مسافة للهيدر */
-}
-
-/* لمعة خفيفة أعلى الكارد */
-.ai-chat-container::before {
-    display: none !important;
+    height: 100dvh;
+    height: -webkit-fill-available;
+    z-index: 2;
+    padding-top: 75px;
+    background: linear-gradient(180deg, var(--ai-surface), var(--ai-surface-strong));
+    backdrop-filter: blur(16px);
+    pointer-events: none;
+    animation: ai-rise 0.7s ease both;
 }
 
 .ai-chat-container > * {
     position: relative;
     z-index: 1;
-    pointer-events: auto; /* إعادة التفاعل للعناصر الداخلية */
+    pointer-events: auto;
 }
 
 /* =========================
@@ -230,29 +282,33 @@ body {
 
 .chat-box {
     flex: 1;
-    padding: 16px 18px 20px;
-    background: transparent !important;
-    backdrop-filter: none !important;
+    padding: 18px 18px 22px;
+    background: transparent;
     display: flex;
     flex-direction: column;
     gap: 12px;
     overflow-y: auto;
     overflow-x: hidden;
-    min-height: 0; /* مهم لـ flex */
+    min-height: 0;
+    pointer-events: none;
+    animation: ai-fade 0.8s ease both;
 }
 
 /* سكرول أنيق */
 .chat-box::-webkit-scrollbar {
     width: 6px;
 }
+
 .chat-box::-webkit-scrollbar-track {
     background: rgba(15, 23, 42, 0.4);
     border-radius: 999px;
 }
+
 .chat-box::-webkit-scrollbar-thumb {
     background: rgba(148, 163, 184, 0.55);
     border-radius: 999px;
 }
+
 .chat-box::-webkit-scrollbar-thumb:hover {
     background: rgba(148, 163, 184, 0.8);
 }
@@ -270,27 +326,25 @@ body {
     word-wrap: break-word;
     animation: msg-pop 0.28s ease-out;
     position: relative;
+    pointer-events: auto;
 }
 
-/* رسالة البوت (يمين الشاشة) */
 .message.bot {
     margin-left: 0;
-    margin-right: auto;      /* يمين في RTL */
-    background: var(--primary, #0f62fe);
-    color: #f9fafb;
-    border-bottom-right-radius: 4px;
-    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+    margin-right: auto;
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.45), rgba(59, 130, 246, 0.75));
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    border-bottom-right-radius: 6px;
+    box-shadow: 0 14px 32px rgba(14, 116, 144, 0.35);
 }
 
-/* رسالة المستخدم (يسار الشاشة) */
 .message.user {
     margin-right: 0;
-    margin-left: auto;       /* يسار */
-    background: var(--bg-card, rgba(255,255,255,0.96));
-    border: 1px solid var(--border-color, rgba(148, 163, 184, 0.35));
-    color: var(--text-main);
-    border-bottom-left-radius: 4px;
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.15);
+    margin-left: auto;
+    background: linear-gradient(135deg, rgba(255, 159, 67, 0.25), rgba(15, 23, 42, 0.7));
+    border: 1px solid rgba(255, 159, 67, 0.45);
+    border-bottom-left-radius: 6px;
+    box-shadow: 0 12px 26px rgba(120, 53, 15, 0.32);
 }
 
 /* أنيميشن ظهور */
@@ -312,19 +366,28 @@ body {
 .chat-input-area {
     padding: 22px 22px 24px;
     padding-bottom: max(22px, env(safe-area-inset-bottom));
-    background: transparent !important;
-    border: 3px solid transparent;
-    border-radius: 18px;
     background:
-        linear-gradient(#0000, #0000) padding-box,
-        linear-gradient(120deg, #0061ff, #00d8ff, #7c3aed, #0061ff) border-box;
-    animation: rotateBorder 6s linear infinite;
+        linear-gradient(120deg, rgba(34, 211, 238, 0.7), rgba(52, 211, 153, 0.6), rgba(255, 159, 67, 0.7), rgba(34, 211, 238, 0.7)) border-box;
+    border: 2px solid transparent;
+    border-radius: 18px;
+    animation: rotateBorder 7s linear infinite;
     flex-shrink: 0;
     position: relative;
     z-index: 100;
-    box-shadow: 0 -6px 22px rgba(0,0,0,0.12);
+    box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.18);
     min-height: 120px;
     width: 100%;
+    pointer-events: auto;
+}
+
+.chat-input-area::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: 16px;
+    background: rgba(7, 14, 29, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 0;
 }
 
 .input-wrapper {
@@ -332,6 +395,7 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
+    z-index: 1;
 }
 
 /* مربع الكتابة */
@@ -340,33 +404,33 @@ body {
     width: 100%;
     padding: 18px 76px 18px 20px;
     border-radius: 12px;
-    border: 1px solid var(--border-color, rgba(148,163,184,0.35));
-    background: var(--bg-card, #0f172a);
-    color: var(--text-main);
+    border: 1px solid var(--ai-border);
+    background: rgba(8, 16, 32, 0.85);
+    color: var(--ai-text);
     font-size: 18px;
     min-height: 70px;
     outline: none;
-    font-family: "Tajawal", system-ui, sans-serif;
+    font-family: var(--ai-font-body);
     resize: none;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.12);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 #userInput::placeholder {
-    color: var(--text-muted, rgba(100, 116, 139, 0.9));
+    color: var(--ai-muted);
 }
 
 #userInput:focus {
-    background: var(--bg-card, #ffffff);
+    background: rgba(12, 22, 40, 0.9);
     box-shadow:
-        inset 0 1px 4px rgba(0,0,0,0.16),
-        0 0 0 2px rgba(0, 97, 255, 0.25);
-    color: var(--text-main);
+        inset 0 1px 4px rgba(0, 0, 0, 0.2),
+        0 0 0 2px rgba(34, 211, 238, 0.35);
+    color: var(--ai-text);
 }
 
-/* زر الإرسال – على اليمين مثل واتساب */
+/* زر الإرسال */
 .send-btn {
     position: absolute;
-    right: 12px;                 /* <<< هنا الجهة */
+    right: 12px;
     width: 56px;
     height: 56px;
     border-radius: 12px;
@@ -374,16 +438,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0061ff, #7c3aed);
+    background: linear-gradient(135deg, #22d3ee, #34d399);
     color: #ffffff;
     font-size: 1.2rem;
     cursor: pointer;
-    box-shadow: 0 6px 18px rgba(0, 97, 255, 0.35);
+    box-shadow: 0 6px 18px rgba(34, 211, 238, 0.35);
     transition:
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast),
-        filter var(--transition-fast),
-        background var(--transition-fast);
+        transform var(--ai-transition-fast),
+        box-shadow var(--ai-transition-fast),
+        filter var(--ai-transition-fast);
     z-index: 10;
 }
 
@@ -393,17 +456,17 @@ body {
 
 .send-btn:hover {
     transform: translateY(-1px) scale(1.04);
-    box-shadow: 0 10px 26px rgba(0, 97, 255, 0.45);
+    box-shadow: 0 10px 26px rgba(34, 211, 238, 0.45);
     filter: brightness(1.05);
 }
 
 .send-btn:active {
     transform: translateY(0) scale(0.95);
-    box-shadow: 0 4px 12px rgba(0, 97, 255, 0.35);
+    box-shadow: 0 4px 12px rgba(34, 211, 238, 0.35);
 }
 
 .send-btn:focus {
-    outline: 2px solid rgba(0, 97, 255, 0.35);
+    outline: 2px solid rgba(34, 211, 238, 0.4);
     outline-offset: 2px;
 }
 
@@ -411,18 +474,15 @@ body {
 @keyframes rotateBorder {
     0% {
         background:
-            linear-gradient(#0000, #0000) padding-box,
-            linear-gradient(0deg, #0061ff, #00d8ff, #7c3aed, #0061ff) border-box;
+            linear-gradient(120deg, rgba(34, 211, 238, 0.75), rgba(52, 211, 153, 0.6), rgba(255, 159, 67, 0.7), rgba(34, 211, 238, 0.75)) border-box;
     }
     50% {
         background:
-            linear-gradient(#0000, #0000) padding-box,
-            linear-gradient(180deg, #0061ff, #00d8ff, #7c3aed, #0061ff) border-box;
+            linear-gradient(240deg, rgba(34, 211, 238, 0.75), rgba(52, 211, 153, 0.6), rgba(255, 159, 67, 0.7), rgba(34, 211, 238, 0.75)) border-box;
     }
     100% {
         background:
-            linear-gradient(#0000, #0000) padding-box,
-            linear-gradient(360deg, #0061ff, #00d8ff, #7c3aed, #0061ff) border-box;
+            linear-gradient(360deg, rgba(34, 211, 238, 0.75), rgba(52, 211, 153, 0.6), rgba(255, 159, 67, 0.7), rgba(34, 211, 238, 0.75)) border-box;
     }
 }
 
@@ -434,12 +494,12 @@ body {
     text-align: center;
     padding: 10px 12px 18px;
     font-size: 0.82rem;
-    color: var(--text-muted);
+    color: var(--ai-muted);
     margin-top: auto;
 }
 
 .ai-footer strong {
-    color: var(--accent);
+    color: var(--ai-accent);
 }
 
 /* إخفاء الفوتر في صفحة AI */
@@ -453,7 +513,7 @@ body:has(.ai-chat-container) .main-footer {
 
 @media (max-width: 768px) {
     .ai-header-inline {
-        padding: 14px 16px 12px;
+        padding: 16px 16px 12px;
     }
 
     .ai-header-inline h1 {
@@ -461,7 +521,7 @@ body:has(.ai-chat-container) .main-footer {
     }
 
     .ai-header-inline p {
-        font-size: 0.85rem;
+        font-size: 0.86rem;
     }
 
     .ai-chat-container {
@@ -469,7 +529,7 @@ body:has(.ai-chat-container) .main-footer {
         margin: 0;
         border-radius: 0;
         height: 100vh;
-        height: 100dvh; /* استخدام dvh للدعم الحديث */
+        height: 100dvh;
     }
 
     .chat-box {
@@ -484,30 +544,29 @@ body:has(.ai-chat-container) .main-footer {
     }
 
     .chat-input-area {
-        padding: 24px 24px 28px; /* زيادة المسافة للوضوح */
-        padding-bottom: max(28px, env(safe-area-inset-bottom)); /* دعم safe area في iOS */
-        min-height: 110px; /* ارتفاع أدنى على الموبايل - أكبر بكثير */
+        padding: 24px 24px 28px;
+        padding-bottom: max(28px, env(safe-area-inset-bottom));
+        min-height: 110px;
     }
 
     #userInput {
-        font-size: 19px; /* حجم خط أكبر */
-        padding: 24px 68px 24px 24px; /* مسافة أكبر لزر الإرسال */
-        border-width: 3px;
-        min-height: 68px; /* ارتفاع أدنى - أكبر بكثير */
+        font-size: 18px;
+        padding: 22px 68px 22px 22px;
+        border-width: 2px;
+        min-height: 68px;
     }
 
     .send-btn {
-        width: 54px; /* حجم أكبر للوضوح */
+        width: 54px;
         height: 54px;
         right: 12px;
-        font-size: 1.3rem;
-        border-width: 2px;
+        font-size: 1.2rem;
     }
 }
 
 @media (max-width: 480px) {
     .ai-header-inline {
-        padding: 12px 14px 10px;
+        padding: 14px 14px 10px;
     }
 
     .ai-header-inline h1 {
@@ -535,23 +594,22 @@ body:has(.ai-chat-container) .main-footer {
 
     .chat-input-area {
         padding: 22px 22px 26px;
-        padding-bottom: max(26px, env(safe-area-inset-bottom)); /* دعم safe area في iOS */
-        min-height: 105px; /* ارتفاع أدنى على الشاشات الصغيرة - أكبر بكثير */
+        padding-bottom: max(26px, env(safe-area-inset-bottom));
+        min-height: 105px;
     }
 
     #userInput {
-        font-size: 19px; /* حجم خط أكبر */
-        padding: 22px 64px 22px 22px; /* مسافة كافية لزر الإرسال */
-        border-width: 3px;
-        min-height: 66px; /* ارتفاع أدنى - أكبر بكثير */
+        font-size: 18px;
+        padding: 20px 64px 20px 20px;
+        border-width: 2px;
+        min-height: 66px;
     }
 
     .send-btn {
         right: 11px;
-        width: 52px; /* حجم مناسب للوضوح */
+        width: 52px;
         height: 52px;
-        font-size: 1.25rem;
-        border-width: 2px;
+        font-size: 1.15rem;
     }
 }
 
@@ -574,80 +632,59 @@ body:has(.ai-chat-container) .main-footer {
         height: 100vh;
     }
 }
+
 /* =========================
-   تحسين خلفية Spline 
+   الخلفية والحركة
 ========================= */
 
-.spline-bg {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0; /* خلف الشات وأمام الخلفيات الأخرى */
-    overflow: hidden;
+@keyframes ai-aurora {
+    0% {
+        transform: translateY(-2%) rotate(0deg);
+    }
+    50% {
+        transform: translateY(2%) rotate(35deg);
+    }
+    100% {
+        transform: translateY(-2%) rotate(0deg);
+    }
 }
 
-.spline-bg spline-viewer {
-    width: 100vw !important;
-    height: 100vh !important;
-    object-fit: cover;
-    pointer-events: auto !important; /* السماح بتفاعل الماوس */
-    opacity: 1;
+@keyframes ai-orb {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(28px, -24px, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
 }
 
-/* =========================
-   تفعيل Spline كخلفية حقيقية
-========================= */
-
-/* إزالة أي خلفية فوق Spline */
-html, body {
-    background: transparent !important;
+@keyframes ai-rise {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* إزالة خلفية الشات ليظهر Spline تحتها */
-.ai-chat-container {
-    background: rgba(0, 0, 0, 0) !important;
-    backdrop-filter: none !important;
+@keyframes ai-fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
-/* إزالة خلفية صندوق الرسائل */
-.chat-box {
-    background: rgba(0, 0, 0, 0) !important;
-    backdrop-filter: none !important;
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
-
-/* إزالة غطاء اللمعة الذي يخفي الخلفية */
-.ai-chat-container::before {
-    display: none !important;
-}
-
-/* التأكد من أن Spline فوق خلفية الموقع وتحت الشات */
-.spline-bg {
-    z-index: 0 !important;
-}
-
-/* زر تفعيل التفاعل مع الخلفية */
-.spline-activate {
-    position: absolute;
-    inset: auto 16px 16px auto;
-    z-index: 2;
-    padding: 10px 14px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.35);
-    background: rgba(255,255,255,0.18);
-    color: #fff;
-    font-weight: 800;
-    cursor: pointer;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-.spline-bg.spline-active spline-viewer {
-    pointer-events: auto !important;
-}
-
-.spline-bg.spline-active .spline-activate {
-    display: none;
-}
-/* =========================
-   نهاية الملف

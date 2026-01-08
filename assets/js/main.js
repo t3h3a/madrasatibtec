@@ -322,6 +322,16 @@ function applyColorScheme(schemeKey) {
     Object.entries(scheme.vars).forEach(([key, value]) => {
         document.documentElement.style.setProperty(key, value);
     });
+    const accentPrimary = scheme.vars["--accent-primary"];
+    const accentSecondary = scheme.vars["--accent-secondary"];
+    if (accentPrimary) {
+        document.documentElement.style.setProperty("--accent-blue", accentPrimary);
+        document.documentElement.style.setProperty("--accent-blue-strong", accentPrimary);
+    }
+    if (accentSecondary) {
+        document.documentElement.style.setProperty("--accent-orange", accentSecondary);
+        document.documentElement.style.setProperty("--accent-orange-strong", accentSecondary);
+    }
     localStorage.setItem("colorSchemePreference", schemeKey);
     document.querySelectorAll("[data-color-scheme]").forEach(card => {
         card.classList.toggle("active", card.dataset.colorScheme === schemeKey);

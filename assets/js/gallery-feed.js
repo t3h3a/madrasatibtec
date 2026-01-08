@@ -16,6 +16,19 @@ const heroTitleEl = document.getElementById("galleryHeroTitle");
 const heroIntroEl = document.getElementById("galleryHeroIntro");
 
 let isAdmin = false;
+const galleryFallbackAdmin = consumeGalleryFakeAdmin();
+
+function consumeGalleryFakeAdmin() {
+    const params = new URLSearchParams(window.location.search);
+    const hasFlag = params.get("fakeAdmin") === "1";
+    if (hasFlag) {
+        params.delete("fakeAdmin");
+        const query = params.toString();
+        const newUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+        history.replaceState(null, "", newUrl);
+    }
+    return hasFlag;
+}
 let lastSnapshot = null;
 
 function setStatus(text) {
@@ -193,8 +206,7 @@ function startFeed() {
 }
 
 onAuthStateChanged(auth, (user) => {
-    const fakeAdmin = localStorage.getItem("fakeAdmin") === "true";
-    isAdmin = (!!user && (user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() || user.uid === ADMIN_UID)) || fakeAdmin;
+    isAdmin = (!!user && (user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() || user.uid === ADMIN_UID)) || galleryFallbackAdmin;
     if (lastSnapshot) renderSnapshot(lastSnapshot);
 });
 

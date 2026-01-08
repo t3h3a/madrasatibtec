@@ -58,12 +58,27 @@ const videoThumbInput = document.getElementById("videoThumb");
 const addVideoBtn = document.getElementById("addVideoBtn");
 const videoStatus = document.getElementById("videoStatus");
 const adminVideosList = document.getElementById("adminVideos");
-const SLOT_COUNT = 11;
+const SLOT_COUNT = 12;
 let slotState = Array.from({ length: SLOT_COUNT }, () => ({ image: "", title: "", caption: "" }));
 const FALLBACK_EMAIL = "btecmaad@gmail.com";
 const FALLBACK_PASS = "123456789102008";
+let fallbackActive = false;
 let unsubscribeVideos = null;
 let isUploadingVideo = false;
+
+function consumeFakeAdminFlag() {
+    const params = new URLSearchParams(window.location.search);
+    const isFake = params.get("fakeAdmin") === "1";
+    if (isFake) {
+        params.delete("fakeAdmin");
+        const query = params.toString();
+        const newUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+        history.replaceState(null, "", newUrl);
+    }
+    return isFake;
+}
+
+fallbackActive = consumeFakeAdminFlag();
 
 function clearLoginInputs() {
     if (emailInput) emailInput.value = "";
@@ -180,7 +195,7 @@ async function adminLogin(e) {
         }
         // fallback محلي إذا فشل Firebase والبيانات مطابقة
         if (email.toLowerCase() === FALLBACK_EMAIL.toLowerCase() && pass === FALLBACK_PASS) {
-            localStorage.setItem("fakeAdmin", "true");
+            fallbackActive = true;
             togglePanel(true);
             setStatus("");
             return;
@@ -200,7 +215,7 @@ async function logoutAdmin() {
         console.error(err);
         setStatus("تعذر تسجيل الخروج", true);
     }
-    localStorage.removeItem("fakeAdmin");
+    fallbackActive = false;
 }
 
 async function uploadPost() {
@@ -698,8 +713,7 @@ function wireAdminUI() {
 
     let unsubscribePosts = null;
     onAuthStateChanged(auth, (user) => {
-        const fakeAdmin = localStorage.getItem("fakeAdmin") === "true";
-        const ok = (!!user && (user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() || user.uid === ADMIN_UID)) || fakeAdmin;
+        const ok = (!!user && (user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() || user.uid === ADMIN_UID)) || fallbackActive;
         togglePanel(ok);
         if (ok) {
             setStatus("");

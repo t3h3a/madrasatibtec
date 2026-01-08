@@ -1,12 +1,21 @@
+html {
+    background-color: #0b1220;
+    min-height: 100dvh;
+}
+
 .admin-shell {
-    min-height: 100vh;
+    min-height: 100dvh;
     padding: 48px 16px 64px;
+    background-color: #0b1220;
     background:
         radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.18), transparent 32%),
         radial-gradient(circle at 85% 10%, rgba(124, 58, 237, 0.2), transparent 28%),
         linear-gradient(145deg, #0b1220, #0f172a 45%, #0b1220);
     color: #e5e7eb;
     font-family: "Tajawal", system-ui, -apple-system, "Segoe UI", sans-serif;
+    position: relative;
+    z-index: 0;
+    overflow-x: hidden;
 }
 
 .admin-card {
@@ -20,6 +29,8 @@
     display: grid;
     gap: 16px;
     backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
 }
 
 .admin-card--panel {
@@ -31,6 +42,37 @@
     justify-content: space-between;
     align-items: center;
     gap: 12px;
+}
+
+.admin-header-actions {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.admin-header-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(15, 23, 42, 0.85);
+    color: #cbd5e1;
+    font-weight: 700;
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-header-link:hover {
+    border-color: rgba(96, 165, 250, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.2);
+}
+
+.admin-header-link:active {
+    transform: translateY(0);
+    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.15);
 }
 
 .admin-tabs {
@@ -179,6 +221,10 @@
     gap: 16px;
     grid-template-columns: 1.05fr 1fr;
     align-items: start;
+}
+
+.admin-grid > * {
+    min-width: 0;
 }
 
 .card-block {
@@ -581,9 +627,10 @@
 }
 
 .admin-login-shell {
-    min-height: 100vh;
+    min-height: 100dvh;
     display: grid;
     place-items: center;
+    background-color: #0b1220;
     background: linear-gradient(135deg, #0b1220, #111827);
     color: #f8fafc;
     padding: 16px;
@@ -694,12 +741,91 @@ hr {
     margin: 8px 0;
 }
 
+.admin-shell .overlay,
+.admin-shell .loader,
+.admin-shell .loading-overlay,
+.admin-shell .page-loader {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 0;
+}
+
+.admin-shell .overlay.active,
+.admin-shell .overlay.show,
+.admin-shell .overlay.is-active,
+.admin-shell .loader.active,
+.admin-shell .loader.show,
+.admin-shell .loader.is-active,
+.admin-shell .loading-overlay.active,
+.admin-shell .loading-overlay.show,
+.admin-shell .loading-overlay.is-active,
+.admin-shell .page-loader.active,
+.admin-shell .page-loader.show,
+.admin-shell .page-loader.is-active,
+.admin-shell .overlay[aria-hidden="false"],
+.admin-shell .loading-overlay[aria-hidden="false"],
+.admin-shell .page-loader[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    background: rgba(11, 18, 32, 0.6);
+    z-index: 10;
+}
+
 @media (max-width: 640px) {
     .admin-card, .admin-login-card {
         padding: 18px;
     }
 
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-header-actions {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .admin-tabs {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .admin-tabs button {
+        flex: 1 1 140px;
+        text-align: center;
+    }
+
     .admin-grid {
         grid-template-columns: 1fr;
+    }
+
+    .post-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .post-gallery {
+        width: 100%;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .admin-actions,
+    .video-form .admin-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .admin-shell .overlay,
+    .admin-shell .loader,
+    .admin-shell .loading-overlay,
+    .admin-shell .page-loader {
+        display: none;
     }
 }

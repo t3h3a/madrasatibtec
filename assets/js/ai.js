@@ -100,7 +100,7 @@ function addMessage(text, sender = "bot") {
 
 
 setTimeout(() => {
-    addMessage("مرحباً بك في المساعد الذكي! كيف يمكنني مساعدتك؟ 🤖🔥", "bot");
+    addMessage("مرحباً بك في المساعد الذكي! كيف يمكنني مساعدتك؟ ✨", "bot");
 }, 300);
 
 
@@ -144,8 +144,55 @@ chatForm.addEventListener("submit", async (e) => {
     }
 });
 
+/* السماح بالتمرير داخل الشات حتى لو كانت الحاوية لا تلتقط الأحداث */
+function isInsideChat(event) {
+    if (!chatBox) return false;
+    const rect = chatBox.getBoundingClientRect();
+    const y = ("clientY" in event) ? event.clientY : event.touches?.[0]?.clientY;
+    const x = ("clientX" in event) ? event.clientX : event.touches?.[0]?.clientX;
+    if (x == null || y == null) return false;
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+}
+
+function scrollChat(delta) {
+    if (!chatBox) return;
+    chatBox.scrollTop += delta;
+}
+
+window.addEventListener("wheel", (event) => {
+    if (isInsideChat(event)) {
+        scrollChat(event.deltaY);
+        event.preventDefault();
+    }
+}, { passive: false });
+
+let lastTouchY = null;
+
+window.addEventListener("touchstart", (event) => {
+    if (isInsideChat(event)) {
+        lastTouchY = event.touches?.[0]?.clientY ?? null;
+    } else {
+        lastTouchY = null;
+    }
+}, { passive: true });
+
+window.addEventListener("touchmove", (event) => {
+    if (lastTouchY == null) return;
+    const touchY = event.touches?.[0]?.clientY;
+    if (touchY == null) return;
+    const delta = lastTouchY - touchY;
+    if (delta !== 0) {
+        scrollChat(delta);
+        event.preventDefault();
+    }
+    lastTouchY = touchY;
+}, { passive: false });
+
+window.addEventListener("touchend", () => {
+    lastTouchY = null;
+});
+
 /* =========================
-   تفعيل خلفية Spline فوق الصفحة
+   خلفية ثابتة للمساعد
 ========================= */
-// خلفية ثابتة: لا حاجة لتفعيل Spline
 

@@ -4,7 +4,10 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    setPersistence,
+    inMemoryPersistence,
+    browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 import {
     getFirestore,
@@ -51,6 +54,9 @@ export {
     createUserWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
+    setPersistence,
+    inMemoryPersistence,
+    browserLocalPersistence,
     collection,
     addDoc,
     deleteDoc,

@@ -5,11 +5,25 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+    setPersistence,
+    browserLocalPersistence
 } from "./firebase-config.js";
 
 const FALLBACK_EMAIL = "btecmaad@gmail.com";
 const FALLBACK_PASS = "123456789102008";
+
+let persistencePromise = null;
+
+async function ensureLocalPersistence() {
+    if (persistencePromise) return persistencePromise;
+    persistencePromise = setPersistence(auth, browserLocalPersistence).catch((err) => {
+        console.error("failed to set persistence", err);
+        setStatus("تعذر تهيئة حالة المصادقة", true);
+        throw err;
+    });
+    return persistencePromise;
+}
 
 const loginForm = document.getElementById("adminLoginForm");
 const loginButton = document.getElementById("adminLoginButton");
@@ -28,8 +42,9 @@ function setLoading(isLoading = false) {
     loginButton.classList.toggle("is-loading", isLoading);
 }
 
-function redirectToPanel() {
-    window.location.replace("admin-panel.html");
+function redirectToPanel(query = "") {
+    const suffix = query ? `?${query}` : "";
+    window.location.replace(`admin-panel.html${suffix}`);
 }
 
 function isAdminUser(user) {
@@ -67,8 +82,7 @@ async function handleFirebaseLogin(email, password) {
 
 async function attemptFallbackOrFail(email, password) {
     if (email.toLowerCase() === FALLBACK_EMAIL.toLowerCase() && password === FALLBACK_PASS) {
-        localStorage.setItem("fakeAdmin", "true");
-        redirectToPanel();
+        redirectToPanel("fakeAdmin=1");
         return true;
     }
     return false;
@@ -88,6 +102,7 @@ async function handleSubmit(event) {
 
     setLoading(true);
     try {
+        await ensureLocalPersistence();
         await handleFirebaseLogin(email, password);
     } catch (error) {
         console.error(error);
@@ -102,8 +117,7 @@ async function handleSubmit(event) {
 
 function ensureAdminRedirect() {
     onAuthStateChanged(auth, (user) => {
-        const fakeAdmin = localStorage.getItem("fakeAdmin") === "true";
-        if (fakeAdmin || isAdminUser(user)) {
+        if (isAdminUser(user)) {
             redirectToPanel();
         }
     });

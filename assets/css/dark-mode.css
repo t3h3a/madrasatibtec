@@ -27,12 +27,12 @@
     --shadow: rgba(0,0,0,0.6);
     --header-bg: rgba(0,0,0,0.88);
     /* نسخة الألوان للوضع الداكن - تبقى الألوان المميزة */
-    --accent-orange: #ffb86c;
-    --accent-orange-strong: #ff9b4d;
-    --accent-blue: #7fb4ff;
-    --accent-blue-strong: #4b8dff;
-    --kw-bg-orange: rgba(255, 184, 108, 0.18);
-    --kw-bg-blue: rgba(127, 180, 255, 0.22);
+    --accent-orange: var(--accent-secondary, #ffb86c);
+    --accent-orange-strong: var(--accent-secondary, #ff9b4d);
+    --accent-blue: var(--accent-primary, #7fb4ff);
+    --accent-blue-strong: var(--accent-primary, #4b8dff);
+    --kw-bg-orange: color-mix(in srgb, var(--accent-orange) 18%, transparent);
+    --kw-bg-blue: color-mix(in srgb, var(--accent-blue) 22%, transparent);
     --kw-border: rgba(255, 255, 255, 0.12);
 }
 
@@ -391,12 +391,23 @@ input, textarea, select {
 }
 
 /* تعديل صفحة المساعد الذكي */
-[data-theme="dark"] .ai-bg {
-    opacity: 0.8;
+html[data-theme="dark"] body[data-page="ai"] {
+    --ai-bg-base: #05070f;
+    --ai-bg-deep: #0b1428;
+    --ai-bg-shift: #08303c;
+    --ai-surface: rgba(5, 12, 24, 0.78);
+    --ai-surface-strong: rgba(5, 12, 24, 0.92);
+    --ai-border: rgba(148, 163, 184, 0.2);
+    --ai-muted: #a6b4c8;
 }
 
-[data-theme="dark"] .ai-chat-container {
-    background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.95)) !important;
+html[data-theme="dark"] body[data-page="ai"] {
+    background: var(--ai-bg-base) !important;
+    color: var(--ai-text) !important;
+}
+
+html[data-theme="dark"] body[data-page="ai"] .ai-bg {
+    opacity: 0.95;
 }
 /* (keyword classes moved to style.css for global scope) */
 

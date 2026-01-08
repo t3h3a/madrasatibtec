@@ -12,6 +12,13 @@ html {
     font-size: var(--font-size-medium);
 }
 
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+}
+
 html[data-font-size="small"] {
     font-size: var(--font-size-small);
 }

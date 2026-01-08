@@ -8,7 +8,7 @@
     <!-- الخط -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700;800&family=Readex+Pro:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <!-- أيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -21,8 +21,6 @@
     <link rel="stylesheet" href="assets/css/dark-mode.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
 
-    <!-- ⚡ ضروري يوضع هنا قبل الاستعمال -->
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.3/build/spline-viewer.js"></script>
 </head>
 
 <body data-page="ai">
@@ -66,9 +64,11 @@
         </div>
     </header>
 
-    <!-- ⚡ خلفية ثابتة للمساعد -->
-    <div class="ai-bg">
-        <spline-viewer url="https://prod.spline.design/sa1tFQiqp-4BArQh/scene.splinecode"></spline-viewer>
+    <!-- خلفية المساعد -->
+    <div class="ai-bg" aria-hidden="true">
+        <span class="ai-orb orb-1"></span>
+        <span class="ai-orb orb-2"></span>
+        <span class="ai-orb orb-3"></span>
     </div>
 
     <!-- ⚡ صندوق الشات -->
@@ -76,7 +76,7 @@
 
         <!-- عنوان داخل الشات -->
         <div class="ai-header-inline">
-            <h1>🤖 المساعد الذكي لمدرسة وادي موسى الثانوية</h1>
+            <h1>المساعد الذكي لمدرسة <span>وادي موسى</span> الثانوية</h1>
             <p>أنا هنا لخدمتك… اسألني أي شيء تريده ✨</p>
         </div>
 
