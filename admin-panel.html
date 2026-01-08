@@ -11,28 +11,17 @@
     <link rel="stylesheet" href="assets/css/admin.css">
 </head>
 <body class="admin-shell">
-    <section id="adminLoginCard" class="admin-card">
+    <section id="adminGuardCard" class="admin-card">
         <div class="admin-header">
             <div>
-                <p class="eyebrow">دخول الأدمن</p>
-                <h1>تسجيل الدخول</h1>
-                <p>الدخول للبريد المصرّح فقط.</p>
+                <p class="eyebrow">تأكيد الصلاحيات</p>
+                <h1>جاري التحقق من دخول الأدمن</h1>
+                <p>سيتم تحويلك تلقائياً لصفحة تسجيل الدخول إذا لم تكن مخولاً.</p>
+            </div>
+            <div class="admin-header-actions">
+                <a class="admin-header-link" href="admin-login.html"><i class="fa-solid fa-shield-halved"></i> تسجيل دخول الأدمن</a>
             </div>
         </div>
-        <form id="adminLoginForm" class="admin-form" autocomplete="off">
-            <label>
-                <span>البريد الإلكتروني</span>
-                <input type="email" id="adminEmail" required placeholder="btecmaad@gmail.com" autocomplete="off">
-            </label>
-            <label>
-                <span>كلمة المرور</span>
-                <input type="password" id="adminPassword" required placeholder="••••••••" autocomplete="new-password">
-            </label>
-            <div class="admin-actions">
-                <button type="submit"><i class="fa-solid fa-door-open"></i> تسجيل الدخول</button>
-                <div id="adminStatus" class="status"></div>
-            </div>
-        </form>
     </section>
 
     <section id="adminPanelCard" class="admin-card admin-card--panel" style="display:none;">
@@ -47,6 +36,7 @@
                 <button id="adminLogout" class="danger"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</button>
             </div>
         </div>
+        <div id="adminStatus" class="status"></div>
 
         <div class="admin-tabs">
             <button id="adminTabGallery" class="active"><i class="fa-solid fa-layer-group"></i> إدارة المعرض</button>

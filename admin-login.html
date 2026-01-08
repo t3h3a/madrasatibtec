@@ -20,14 +20,14 @@
             <p class="muted">استخدم البريد المصرّح به للوصول الآمن إلى إعدادات المنتدى والمحتوى.</p>
         </header>
 
-        <form id="adminLoginForm" class="admin-form" autocomplete="on">
+        <form id="adminLoginForm" class="admin-form" autocomplete="off">
             <label>
                 البريد الإلكتروني
-                <input id="adminEmail" name="email" type="email" placeholder="admin@domain.com" autocomplete="username" required>
+                <input id="adminEmail" name="email" type="email" placeholder="admin@domain.com" autocomplete="off" inputmode="email" autocapitalize="none" spellcheck="false" required>
             </label>
             <label>
                 كلمة المرور
-                <input id="adminPassword" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+                <input id="adminPassword" name="password" type="password" placeholder="••••••••" autocomplete="new-password" required>
             </label>
             <button id="adminLoginButton" type="submit">
                 <i class="fa-solid fa-shield-halved"></i>

@@ -166,6 +166,39 @@ body {
     color: var(--text-primary) !important;
 }
 
+/* الهيدر الخاص بالموبايل */
+[data-theme="dark"] .mobile-header {
+    background: var(--header-bg) !important;
+    border-top-color: var(--border-color) !important;
+    border-bottom-color: var(--border-color) !important;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.6) !important;
+}
+
+[data-theme="dark"] .mobile-brand {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .mobile-brand img {
+    border-color: var(--accent-primary, #2563eb) !important;
+}
+
+[data-theme="dark"] .mobile-actions a,
+[data-theme="dark"] .mobile-actions button {
+    background: rgba(255,255,255,0.06) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .mobile-nav-icons a {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .mobile-nav-icons a.active {
+    color: #fff !important;
+}
+
 /* نافذة الإعدادات في الوضع الداكن */
 [data-theme="dark"] .settings-panel {
     background: #0f172a;

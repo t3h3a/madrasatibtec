@@ -28,6 +28,25 @@ async function ensureLocalPersistence() {
 const loginForm = document.getElementById("adminLoginForm");
 const loginButton = document.getElementById("adminLoginButton");
 const statusEl = document.getElementById("adminLoginStatus");
+const emailInput = document.getElementById("adminEmail");
+const passwordInput = document.getElementById("adminPassword");
+
+function clearLoginFields() {
+    if (emailInput) emailInput.value = "";
+    if (passwordInput) passwordInput.value = "";
+}
+
+function consumeLogoutFlag() {
+    const params = new URLSearchParams(window.location.search);
+    const didLogout = params.get("loggedOut") === "1";
+    if (didLogout) {
+        params.delete("loggedOut");
+        const query = params.toString();
+        const newUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+        history.replaceState(null, "", newUrl);
+    }
+    return didLogout;
+}
 
 function setStatus(message = "", isError = false) {
     if (!statusEl) return;
@@ -129,6 +148,11 @@ function wireForm() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    const didLogout = consumeLogoutFlag();
+    clearLoginFields();
+    if (didLogout) {
+        setTimeout(clearLoginFields, 250);
+    }
     wireForm();
     ensureAdminRedirect();
 });

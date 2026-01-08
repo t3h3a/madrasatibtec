@@ -3,8 +3,6 @@ import {
     db,
     ADMIN_EMAIL,
     ADMIN_UID,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
     collection,
@@ -24,16 +22,13 @@ import {
     uploadBytesResumable
 } from "./firebase-config.js";
 
-const loginForm = document.getElementById("adminLoginForm");
-const emailInput = document.getElementById("adminEmail");
-const passInput = document.getElementById("adminPassword");
 const logoutBtn = document.getElementById("adminLogout");
 const uploadBtn = document.getElementById("addPostBtn");
 const titleInput = document.getElementById("postTitle");
 const fileInput = document.getElementById("postImage");
 const selectedList = document.getElementById("selectedImages");
 const postsWrap = document.getElementById("adminPosts");
-const loginCard = document.getElementById("adminLoginCard");
+const guardCard = document.getElementById("adminGuardCard");
 const panelCard = document.getElementById("adminPanelCard");
 const statusEl = document.getElementById("adminStatus");
 const headingInput = document.getElementById("galleryHeading");
@@ -60,8 +55,6 @@ const videoStatus = document.getElementById("videoStatus");
 const adminVideosList = document.getElementById("adminVideos");
 const SLOT_COUNT = 12;
 let slotState = Array.from({ length: SLOT_COUNT }, () => ({ image: "", title: "", caption: "" }));
-const FALLBACK_EMAIL = "btecmaad@gmail.com";
-const FALLBACK_PASS = "123456789102008";
 let fallbackActive = false;
 let unsubscribeVideos = null;
 let isUploadingVideo = false;
@@ -79,11 +72,6 @@ function consumeFakeAdminFlag() {
 }
 
 fallbackActive = consumeFakeAdminFlag();
-
-function clearLoginInputs() {
-    if (emailInput) emailInput.value = "";
-    if (passInput) passInput.value = "";
-}
 
 // Cloudinary preset as configured in the provided screenshot
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dzrwjhqzu/image/upload";
@@ -114,6 +102,12 @@ function setStatus(text, isError = false) {
     statusEl.textContent = text || "";
     statusEl.className = isError ? "status error" : "status";
     if (text) statusEl.classList.add("show");
+}
+
+function redirectToLogin(markLoggedOut = false) {
+    const url = new URL("admin-login.html", window.location.href);
+    if (markLoggedOut) url.searchParams.set("loggedOut", "1");
+    window.location.replace(url.toString());
 }
 
 function setSlotsStatus(text, isError = false) {
@@ -165,57 +159,18 @@ function uploadVideoToCloudinary(file, onProgress = null) {
     });
 }
 
-async function adminLogin(e) {
-    e?.preventDefault();
-    const email = emailInput?.value?.trim();
-    const pass = passInput?.value || "";
-    if (!email || !pass) {
-        setStatus("أدخل البريد وكلمة المرور", true);
-        return;
-    }
-    try {
-        const cred = await signInWithEmailAndPassword(auth, email, pass);
-        const userEmail = cred?.user?.email || "";
-        const isAdminUser = (userEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) || (cred?.user?.uid === ADMIN_UID);
-        if (!isAdminUser) {
-            await signOut(auth);
-            setStatus("هذا الحساب ليس مخولاً كأدمن", true);
-        }
-    } catch (err) {
-        if (err?.code === "auth/user-not-found" && email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-            try {
-                await createUserWithEmailAndPassword(auth, email, pass);
-                setStatus("تم إنشاء حساب الأدمن، أعد المحاولة");
-                return;
-            } catch (createErr) {
-                console.error(createErr);
-                setStatus("تعذر إنشاء حساب الأدمن", true);
-                return;
-            }
-        }
-        // fallback محلي إذا فشل Firebase والبيانات مطابقة
-        if (email.toLowerCase() === FALLBACK_EMAIL.toLowerCase() && pass === FALLBACK_PASS) {
-            fallbackActive = true;
-            togglePanel(true);
-            setStatus("");
-            return;
-        }
-        console.error(err);
-        setStatus(err?.message || "تعذر تسجيل الدخول", true);
-    }
-}
-
 async function logoutAdmin() {
     try {
         await signOut(auth);
         clearFormState();
-        clearLoginInputs();
         setStatus("تم تسجيل الخروج");
+        fallbackActive = false;
+        redirectToLogin(true);
     } catch (err) {
         console.error(err);
         setStatus("تعذر تسجيل الخروج", true);
+        return;
     }
-    fallbackActive = false;
 }
 
 async function uploadPost() {
@@ -688,7 +643,7 @@ function clearFormState() {
 }
 
 function togglePanel(isAdmin) {
-    if (loginCard) loginCard.style.display = isAdmin ? "none" : "grid";
+    if (guardCard) guardCard.style.display = isAdmin ? "none" : "grid";
     if (panelCard) panelCard.style.display = isAdmin ? "grid" : "none";
 }
 
@@ -701,7 +656,6 @@ function switchAdminTab(target = "gallery") {
 }
 
 function wireAdminUI() {
-    if (loginForm) loginForm.addEventListener("submit", adminLogin);
     if (logoutBtn) logoutBtn.addEventListener("click", logoutAdmin);
     if (uploadBtn) uploadBtn.addEventListener("click", uploadPost);
     if (fileInput) fileInput.addEventListener("change", renderSelectedFiles);
@@ -730,13 +684,14 @@ function wireAdminUI() {
             unsubscribeVideos = null;
             if (postsWrap) postsWrap.innerHTML = "";
             if (adminVideosList) adminVideosList.innerHTML = "";
+            redirectToLogin();
         }
     });
 }
 
 document.addEventListener("DOMContentLoaded", wireAdminUI);
 
-export { adminLogin, logoutAdmin, uploadPost, renderPosts, deletePost, subscribePosts };
+export { logoutAdmin, uploadPost, renderPosts, deletePost, subscribePosts };
 
 async function uploadToCloudinary(file) {
     const form = new FormData();
